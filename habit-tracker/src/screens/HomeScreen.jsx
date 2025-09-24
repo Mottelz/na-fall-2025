@@ -1,20 +1,52 @@
-import { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+	View,
+	Text,
+	TextInput,
+	Button,
+	FlatList,
+	StyleSheet,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function HomeScreen() {
+const HomeScreen = ({ navigation }) => {
 	const [habit, setHabit] = useState('');
 	const [habits, setHabits] = useState([]);
 
+	useEffect(() => {
+		const loadHabits = async () => {
+			try {
+				const stored = await AsyncStorage.getItem('habits');
+				if (stored) {
+					setHabits(JSON.parse(stored));
+				}
+			} catch (e) {
+				console.error('Failed to load habits', e);
+			}
+		};
+		loadHabits();
+	}, []);
+
+	const saveHabits = async (newHabits) => {
+		try {
+			await AsyncStorage.setItem('habits', JSON.stringify(newHabits));
+		} catch (e) {
+			console.error('Failed to save habits', e);
+		}
+	};
+
 	const addHabit = () => {
-		if(habit.trim().length > 0) {
-			setHabits([...habits, {id: Date.now().toString(), name: habit}]);
+		if (habit.trim()) {
+			const newHabits = [...habits, { id: Date.now().toString(), name: habit }];
+			setHabits(newHabits);
+			saveHabits(newHabits);
 			setHabit('');
 		}
-	}
+	};
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Welcome Home!</Text>
+			<Text style={styles.title}>My Habits</Text>
 
 			<TextInput
 				style={styles.input}
@@ -23,19 +55,23 @@ export default function HomeScreen() {
 				onChangeText={setHabit}
 			/>
 
-			<Button title="Add Habit" onPress={addHabit}/>
+			<Button title="Add Habit" onPress={addHabit} />
 
-			<FlatList 
+			<Button title="Go to History" onPress={() => navigation.navigate('History')} />
+
+			<FlatList
 				style={styles.list}
 				data={habits}
-				renderItem={({ item }) => (
-					<Text style={styles.item}>{item.name}</Text>
-				)}
 				keyExtractor={(item) => item.id}
+				renderItem={({ item }) => (
+					<Text style={styles.habit}>{item.name}</Text>
+				)}
 			/>
 		</View>
 	);
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
 	container: { flex: 1, padding: 20, marginTop: 40 },
