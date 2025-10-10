@@ -1,4 +1,3 @@
-// src/api/omdb.ts
 import Constants from "expo-constants";
 
 const API_KEY = Constants.expoConfig?.extra?.omdbApiKey;
