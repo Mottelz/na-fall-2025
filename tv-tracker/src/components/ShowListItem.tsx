@@ -16,5 +16,6 @@ export default function ShowListItem({ item }: { item: Show }) {
                 <Text numberOfLines={3}>{item.summary?.replace(/<[^>]+>/g, "")}</Text>
               </View>
             </View>
+			
 	);
 }
