@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, FlatList, Text, Image, ActivityIndicator } from "react-native";
+import { View, TextInput, FlatList, Button, ActivityIndicator } from "react-native";
 import { searchShows, Show } from "../services/tvmazeService";
 import ShowListItem from "../components/ShowListItem";
 
-export default function ShowSearchScreen() {
+export default function ShowSearchScreen({ navigation }: any) {
   const [query, setQuery] = useState<string>("Harley Quinn");
   const [shows, setShows] = useState<Show[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +34,14 @@ export default function ShowSearchScreen() {
           data={shows}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-			<ShowListItem item={item} />
+			      <>
+            <ShowListItem item={item} />
+            <Button title="More" 
+              onPress={() => navigation.navigate("Show", {
+                showId: item.id,
+              })}
+            />
+            </>
           )}
         />
       )}
