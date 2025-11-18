@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { View, TextInput, FlatList, Button, ActivityIndicator } from "react-native";
 import { searchShows, Show } from "../services/tvmazeService";
 import ShowListItem from "../components/ShowListItem";
-import { ShowContext } from "../context/ShowContext";
 
 export default function ShowSearchScreen({ navigation }: any) {
   const [query, setQuery] = useState<string>("Harley Quinn");
@@ -21,6 +20,7 @@ export default function ShowSearchScreen({ navigation }: any) {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
+      <Button title="Go to Favourites" onPress={() => navigation.navigate("Favourites")} />
       <TextInput
         value={query}
         onChangeText={setQuery}
