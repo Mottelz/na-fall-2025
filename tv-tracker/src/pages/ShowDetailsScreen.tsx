@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
 import { getShowById, Show } from "../services/tvmazeService";
+import { ShowContext } from "../context/ShowContext";
 
-export default function ShowDetailsScreen({ route }: {route: any}) {
-  const [show, setShow] = useState<Show | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+export default function ShowDetailsScreen() {
 
-  const { showId } = route.params;
-
-
-  useEffect(() => {
-    setLoading(true);
-    getShowById(showId)
-      .then(setShow)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+  const { selectedShow } = useContext(ShowContext);
 
   return (
     <View style={{ flex: 1, padding: 16, flexDirection: 'column', alignItems: 'center' }}>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
+      {selectedShow ? (
             <>
-              <Text style={styles.header}>{show?.name}</Text>
+              <Text style={styles.header}>{selectedShow?.name}</Text>
               <Image
-                source={{ uri: show?.image?.original }}
+                source={{ uri: selectedShow?.image?.original }}
                 style={{ width: 200, height: 300, marginBottom: 20 }}
               />
-              <Text style={styles.summary}>{show?.summary ? show.summary.replace(/<[^>]+>/g, '') : 'No summary available.'}</Text>
+              <Text style={styles.summary}>{selectedShow?.summary ? selectedShow.summary.replace(/<[^>]+>/g, '') : 'No summary available.'}</Text>
             </>
+          ) : (
+            <Text>No Show Selected</Text>
           )}
     </View>
   );

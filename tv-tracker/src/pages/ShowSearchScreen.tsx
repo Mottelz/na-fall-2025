@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, TextInput, FlatList, Button, ActivityIndicator } from "react-native";
 import { searchShows, Show } from "../services/tvmazeService";
 import ShowListItem from "../components/ShowListItem";
+import { ShowContext } from "../context/ShowContext";
 
 export default function ShowSearchScreen({ navigation }: any) {
   const [query, setQuery] = useState<string>("Harley Quinn");
@@ -35,12 +36,7 @@ export default function ShowSearchScreen({ navigation }: any) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
 			      <>
-            <ShowListItem item={item} />
-            <Button title="More" 
-              onPress={() => navigation.navigate("Show", {
-                showId: item.id,
-              })}
-            />
+            <ShowListItem item={item} nav={navigation} />
             </>
           )}
         />
