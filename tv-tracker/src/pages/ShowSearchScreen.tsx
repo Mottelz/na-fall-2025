@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, TextInput, FlatList, Button, ActivityIndicator } from "react-native";
-import { searchShows, Show } from "../services/tvmazeService";
+import { searchShows } from "../services/tvmazeService";
 import ShowListItem from "../components/ShowListItem";
+import Show from "../models/show";
 
 export default function ShowSearchScreen({ navigation }: any) {
   const [query, setQuery] = useState<string>("Harley Quinn");
@@ -20,14 +21,15 @@ export default function ShowSearchScreen({ navigation }: any) {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Button title="Go to Favourites" onPress={() => navigation.navigate("Favourites")} />
       <TextInput
         value={query}
         onChangeText={setQuery}
         placeholder="Search for a show..."
         style={{ borderWidth: 1, borderColor: "#ccc", padding: 8, borderRadius: 6, marginBottom: 12, backgroundColor: "rgba(200, 200, 200, 0.3)" }}
       />
-
+      <View style={{ marginBottom: 12, flexDirection: "row", justifyContent: "flex-end" }}>
+        <Button title="Go to Favourites" onPress={() => navigation.navigate("Favourites")} />
+      </View>
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (

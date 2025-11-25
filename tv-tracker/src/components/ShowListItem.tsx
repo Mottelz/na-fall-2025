@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { View, Text, Image, Button, StyleSheet, TouchableOpacity } from "react-native";
-import { Show } from "../services/tvmazeService";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ShowContext } from "../context/ShowContext";
+import Show from "../models/show";
 
-export default function ShowListItem({ item, nav }: { item: Show, nav: any }) {
+export default function ShowListItem({ item, nav, bigView }: { item: Show, nav: any, bigView?: boolean }) {
 
   const { setFavourites, favourites, setSelectedShow } = useContext(ShowContext);
+  const styles = bigView ? bigStyles : smallStyles;
 
   const openShow = (show: Show) => {
     setSelectedShow(show);
@@ -34,6 +35,7 @@ export default function ShowListItem({ item, nav }: { item: Show, nav: any }) {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.summary}>{item.summary?.replace(/<[^>]+>/g, "")}</Text>
       </View>
+      {!bigView && (
       <View style={styles.actions}>
         <TouchableOpacity onPress={() => addToFavs()} style={styles.button}>
           <Text style={styles.buttonText}>{isFavourite(item) ? `Remove From Favs` : `Add To Favs`}</Text>
@@ -41,13 +43,48 @@ export default function ShowListItem({ item, nav }: { item: Show, nav: any }) {
         <TouchableOpacity onPress={() => openShow(item)} style={styles.button}>
           <Text style={styles.buttonText}>Details</Text>
         </TouchableOpacity>
-      </View>
+      </View>)}
     </View>
 
   );
 }
 
-const styles = StyleSheet.create({
+const bigStyles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    marginBottom: 12,
+    backgroundColor: "rgba(200, 200, 200, 0.3)",
+  },
+  image: {
+    width: 120,
+    height: 180,
+    marginRight: 10,
+    borderColor: "#f0dfffff",
+    borderWidth: 1,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 24,
+  },
+  summary: {
+    fontSize: 18,
+  },
+  details: {
+    flex: 1,
+    padding: 10,
+  },
+  actions: {
+    display: "none",
+  },
+  button: {
+    display: "none",
+  },
+  buttonText: {
+    display: "none",
+  }
+})
+
+const smallStyles = StyleSheet.create({
   container: {
     flexDirection: "row",
     marginBottom: 12,

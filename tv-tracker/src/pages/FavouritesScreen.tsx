@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, use } from "react";
-import { View, TextInput, FlatList, Button, ActivityIndicator } from "react-native";
-import { searchShows, Show } from "../services/tvmazeService";
+import { View, FlatList, ActivityIndicator } from "react-native";
+import Show from "../models/show";
 import ShowListItem from "../components/ShowListItem";
 import { ShowContext } from "../context/ShowContext";
 
@@ -8,7 +8,7 @@ export default function FavouritesScreen({ navigation }: any) {
   const [shows, setShows] = useState<Show[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { favourites, setFavourites } = useContext(ShowContext);
+  const { favourites } = useContext(ShowContext);
 
   useEffect(() => {
 	setLoading(true);
