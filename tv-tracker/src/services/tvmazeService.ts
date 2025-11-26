@@ -1,30 +1,5 @@
-export interface Show {
-  id: number;
-  name: string;
-  summary?: string;
-  image?: {
-    medium: string;
-    original: string;
-  };
-  genres?: string[];
-  premiered?: string;
-  officialSite?: string;
-}
-
-export interface Episode {
-  id: number;
-  url: string;
-  name: string;
-  season: number;
-  number: number;
-  airstamp?: Date;
-  runtime: number;
-  image?: {
-    medium: string;
-    original: string;
-  };
-  summary?: string;
-}
+import Show from "../models/show";
+import Episode from "../models/episode";
 
 const BASE_URL = "https://api.tvmaze.com";
 

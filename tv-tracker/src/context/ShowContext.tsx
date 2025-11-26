@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useState } from 'react';
-import { Show } from '../services/tvmazeService';
+import Show from '../models/show';
 
 interface ShowContextType {
     selectedShow: Show | null;
