@@ -6,7 +6,6 @@ import Show from "../models/show";
 export default function ShowListItem({ item, nav, bigView }: { item: Show, nav: any, bigView?: boolean }) {
 
   const { setFavourites, favourites, setSelectedShow } = useContext(ShowContext);
-  const styles = bigView ? bigStyles : smallStyles;
 
   const openShow = (show: Show) => {
     setSelectedShow(show);
@@ -23,29 +22,44 @@ export default function ShowListItem({ item, nav, bigView }: { item: Show, nav: 
 
   const isFavourite = (item: Show) => {return favourites.includes(item);};
 
+  if (bigView) {
+    return (
+      <View style={bigStyles.container}>
+        {item.image?.medium && (
+          <Image
+            source={{ uri: item.image.medium }}
+            style={bigStyles.image}
+          />
+        )}
+        <View style={bigStyles.details}>
+          <Text style={bigStyles.title}>{item.name}</Text>
+          <Text style={bigStyles.summary}>{item.summary?.replace(/<[^>]+>/g, "")}</Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={smallStyles.container}>
       {item.image?.medium && (
         <Image
           source={{ uri: item.image.medium }}
-          style={styles.image}
+          style={smallStyles.image}
         />
       )}
-      <View style={styles.details}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.summary}>{item.summary?.replace(/<[^>]+>/g, "")}</Text>
+      <View style={smallStyles.details}>
+        <Text style={smallStyles.title}>{item.name}</Text>
+        <Text style={smallStyles.summary}>{item.summary?.replace(/<[^>]+>/g, "")}</Text>
       </View>
-      {!bigView && (
-      <View style={styles.actions}>
-        <TouchableOpacity onPress={() => addToFavs()} style={styles.button}>
-          <Text style={styles.buttonText}>{isFavourite(item) ? `Remove From Favs` : `Add To Favs`}</Text>
+      <View style={smallStyles.actions}>
+        <TouchableOpacity onPress={() => addToFavs()} style={smallStyles.button}>
+          <Text style={smallStyles.buttonText}>{isFavourite(item) ? `Remove From Favs` : `Add To Favs`}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => openShow(item)} style={styles.button}>
-          <Text style={styles.buttonText}>Details</Text>
+        <TouchableOpacity onPress={() => openShow(item)} style={smallStyles.button}>
+          <Text style={smallStyles.buttonText}>Details</Text>
         </TouchableOpacity>
-      </View>)}
+      </View>
     </View>
-
   );
 }
 
@@ -72,15 +86,6 @@ const bigStyles = StyleSheet.create({
   details: {
     flex: 1,
     padding: 10,
-  },
-  actions: {
-    display: "none",
-  },
-  button: {
-    display: "none",
-  },
-  buttonText: {
-    display: "none",
   }
 })
 
